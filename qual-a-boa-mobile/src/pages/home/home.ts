@@ -11,6 +11,11 @@ import {
 })
 export class HomePage {
   parameter1: string;
+  public event = {
+    month: '1990-02-19',
+    timeStarts: '07:43',
+    timeEnds: '1990-02-20'
+  }
   public people: FirebaseListObservable<any>;
 
   constructor( public af: AngularFireDatabase,public navCtrl: NavController, public auth: AuthProvider, public navParams: NavParams) {
@@ -23,13 +28,16 @@ export class HomePage {
         equalTo: this.parameter1
       }
     });
+    // alert(this.parameter1);
     if (this.people[0] == undefined){
+
       this.people = this.af.list('https://qualaboa-68e64.firebaseio.com/estabelecimentos', {
         query: {
           orderByChild: 'email',
           equalTo: this.parameter1
         }
       });
+      // alert(this.people[0]);
     }
   }
   signOutClicked() {

@@ -8,16 +8,95 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+  <h3>Cadastro!</h3>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
   <button ion-button type="button" (click)="signOutClicked()" clear>Sign Out</button>
 
   <button ion-button secondary menuToggle>Toggle Menu</button>
+  <ion-card  *ngIf="people.pessoa == undefined">
+
+    <ion-card-header>
+      Terminando o cadastro
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+
+        <ion-item>
+          <ion-label>Nome</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Como deseja ser chamado</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+        <ion-label>Data de Aniversário</ion-label>
+            <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
+          </ion-item>
+
+      </ion-list>
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-card  *ngIf="people.pessoa == undefined">
+
+    <ion-card-header>
+      Terminando o cadastro
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+
+        <ion-item>
+          <ion-label>Nome do estabelecimento</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label>Nome do responsável</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label>Telefone para contato</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label>Endereço</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label>Horario de abertura</ion-label>
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label>Horario de encerramento</ion-label>
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+        </ion-item>
+        <ion-item>
+        <ion-label>Data de Aniversário</ion-label>
+            <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
+          </ion-item>
+
+      </ion-list>
+    </ion-card-content>
+
+  </ion-card>
 
   <ion-list>
+
     <ion-item *ngFor="let est of people | async">
       <h2>{{est.email}}</h2>
        <ion-note item-right *ngIf="est.pessoa == true">
