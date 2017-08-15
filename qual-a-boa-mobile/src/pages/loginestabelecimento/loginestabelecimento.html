@@ -1,0 +1,40 @@
+<!--
+  Generated template for the EstabelecimentoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title>Lista de Estabelecimentos</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+
+<ion-content padding>
+  <form [formGroup]="emailSignUpForm" (ngSubmit)="cadastrar()">
+  <ion-item>
+    <ion-label>Email</ion-label>
+    <ion-input type="email" formControlName="email" name="email" required clearInput></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Senha</ion-label>
+    <ion-input type="password" formControlName="password" clearInput></ion-input>
+  </ion-item>
+
+  <button ion-button item-right type="submit" [disabled]="!emailSignUpForm.valid" block>Cadastrar</button>
+
+</form>
+  <!-- <ion-list>
+    <ion-item *ngFor="let est of lista | async">
+      <h2>{{est.dono}}</h2>
+      <h3>{{est.rua}}</h3>
+       <ion-note item-right *ngIf="carro.multa === 'true'">
+        Tem multa
+      </ion-note> -->
+    <!-- </ion-item>
+  </ion-list> -->
+</ion-content>
