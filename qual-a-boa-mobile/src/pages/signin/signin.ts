@@ -9,6 +9,7 @@ import { EmailValidator } from '../../validators/email';
 import { ToastController } from 'ionic-angular';
 import { ViewController } from 'ionic-angular';
 import { HomePage } from '../home/home';
+import { BusinessProvider } from '../../providers/business/business';
 
 import { Nav, Platform } from 'ionic-angular';
 
@@ -31,6 +32,7 @@ export class SigninPage {
   @ViewChild(Nav) nav: NavController;
   email: string;
   password: string;
+  type: string;
 
   public signInForm: FormGroup;
   public title = 'Sign in with email'
@@ -38,10 +40,11 @@ export class SigninPage {
   constructor(public navCtrl: NavController, private formBuilder: FormBuilder,
     public auth: AuthProvider,
     public toastCtrl: ToastController,
-    public viewCtrl: ViewController) {
+    public viewCtrl: ViewController, public business: BusinessProvider) {
       this.signInForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
+      password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
+      type: ['']
     });
   }
   createToast(message: string) {
@@ -57,7 +60,8 @@ export class SigninPage {
         this.createToast('Ooops, form not valid...').present();
         return
       } else {
-
+        this.business.setPerson(this.signInForm.value.email);
+        this.business.setType(this.signInForm.value.type);
         // if the form is valid, we continue with validation
         this.auth.signInUser(this.signInForm.value.email, this.signInForm.value.password)
           .then(() => {

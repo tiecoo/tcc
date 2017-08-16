@@ -25,6 +25,16 @@
      <ion-label>Password</ion-label>
      <ion-input type="password" formControlName="password" clearInput></ion-input>
    </ion-item>
+   <ion-list>
+
+  <ion-item>
+    <ion-label>O que você é</ion-label>
+    <ion-select formControlName="type" name="type">
+      <ion-option value="pessoas">Pessoa</ion-option>
+      <ion-option value="estabelecimentos">Estabelecimento</ion-option>
+    </ion-select>
+  </ion-item>
+</ion-list>
 
    <button ion-button type="submit" [disabled]="!signInForm.valid" block>Acessar</button>
 

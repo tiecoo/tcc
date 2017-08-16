@@ -9,17 +9,30 @@
 
 <ion-content padding>
   <h3>Cadastro!</h3>
-
+  {{parameter1}}
   <button ion-button type="button" (click)="signOutClicked()" clear>Sign Out</button>
 
+    <ion-list>
+
+      <ion-item *ngFor="let est of people | async">
+        <h2>{{est.email}}</h2>
+         <ion-note item-right *ngIf="est.pessoa == true">
+          É pessoa
+        </ion-note>
+        <ion-note item-right *ngIf="est.pessoa == false">
+         É estabelecimentos
+       </ion-note>
+       </ion-item>
+    </ion-list>
   <button ion-button secondary menuToggle>Toggle Menu</button>
-  <ion-card  *ngIf="people.pessoa == undefined">
+
+  <ion-card *ngFor="let est of people | async">
 
     <ion-card-header>
       Terminando o cadastro
     </ion-card-header>
 
-    <ion-card-content>
+    <ion-card-content  *ngIf="est.pessoa == true">
       <ion-list>
 
         <ion-item>
@@ -40,15 +53,7 @@
       </ion-list>
     </ion-card-content>
 
-  </ion-card>
-
-  <ion-card  *ngIf="people.pessoa == undefined">
-
-    <ion-card-header>
-      Terminando o cadastro
-    </ion-card-header>
-
-    <ion-card-content>
+    <ion-card-content *ngIf="est.pessoa == false">
       <ion-list>
 
         <ion-item>
@@ -94,14 +99,4 @@
     </ion-card-content>
 
   </ion-card>
-
-  <ion-list>
-
-    <ion-item *ngFor="let est of people | async">
-      <h2>{{est.email}}</h2>
-       <ion-note item-right *ngIf="est.pessoa == true">
-        É pessoa
-      </ion-note>
-     </ion-item>
-  </ion-list>
 </ion-content>
