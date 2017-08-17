@@ -65,11 +65,11 @@ export class SigninPage {
         // if the form is valid, we continue with validation
         this.auth.signInUser(this.signInForm.value.email, this.signInForm.value.password)
           .then(() => {
-            // this.nav.setRoot(HomePage);
+            this.navCtrl.setRoot(HomePage);
             // this.navCtrl.push(HomePage);
-            this.navCtrl.push(HomePage, {
-                email: this.signInForm.value.email
-            });
+            // this.navCtrl.push(HomePage, {
+            //     email: this.signInForm.value.email
+            // });
           },
           (error: any) => {
             switch (error.code) {
