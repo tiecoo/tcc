@@ -36,19 +36,20 @@
       <ion-list>
 
         <ion-item>
-          <ion-label>Nome</ion-label>
+          <ion-label floating>Nome</ion-label>
           <ion-input type="text"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Como deseja ser chamado</ion-label>
+          <ion-label floating>Como deseja ser chamado</ion-label>
           <ion-input type="text"></ion-input>
         </ion-item>
 
         <ion-item>
-        <ion-label>Data de Aniversário</ion-label>
-            <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
-          </ion-item>
+          <ion-label floating>Data de Aniversário</ion-label>
+          <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
+        </ion-item>
+        <button ion-button color="light" (click)="completarcadastro()">Completar Cadastro</button>
 
       </ion-list>
     </ion-card-content>
@@ -57,44 +58,44 @@
       <ion-list>
 
         <ion-item>
-          <ion-label>Nome do estabelecimento</ion-label>
+          <ion-label floating>Nome do estabelecimento</ion-label>
           <ion-input type="text"></ion-input>
         </ion-item>
 
 
         <ion-item>
-          <ion-label>Nome do responsável</ion-label>
+          <ion-label floating>Nome do responsável</ion-label>
           <ion-input type="text"></ion-input>
         </ion-item>
 
 
         <ion-item>
-          <ion-label>Telefone para contato</ion-label>
+          <ion-label floating>Telefone para contato</ion-label>
           <ion-input type="text"></ion-input>
         </ion-item>
 
 
         <ion-item>
-          <ion-label>Endereço</ion-label>
+          <ion-label floating>Endereço</ion-label>
           <ion-input type="text"></ion-input>
         </ion-item>
 
 
         <ion-item>
-          <ion-label>Horario de abertura</ion-label>
+          <ion-label floating>Horario de abertura</ion-label>
           <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
         </ion-item>
 
 
         <ion-item>
-          <ion-label>Horario de encerramento</ion-label>
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+          <ion-label floating>Horario de encerramento</ion-label>
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnd"></ion-datetime>
         </ion-item>
         <ion-item>
-        <ion-label>Data de Aniversário</ion-label>
-            <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
-          </ion-item>
-
+          <ion-label floating>Data de Aniversário</ion-label>
+          <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
+        </ion-item>
+        <button ion-button color="light" (click)="completarcadastro()">Completar Cadastro</button>
       </ion-list>
     </ion-card-content>
 

@@ -17,18 +17,18 @@
  <form [formGroup]="signInForm" (ngSubmit)="signInFormSubmit()">
 
    <ion-item>
-     <ion-label>Email</ion-label>
+     <ion-label floating>Email</ion-label>
      <ion-input type="email" formControlName="email" name="email" required clearInput></ion-input>
    </ion-item>
 
    <ion-item>
-     <ion-label>Password</ion-label>
+     <ion-label floating>Password</ion-label>
      <ion-input type="password" formControlName="password" clearInput></ion-input>
    </ion-item>
    <ion-list>
 
   <ion-item>
-    <ion-label>O que você é</ion-label>
+    <ion-label floating>O que você é</ion-label>
     <ion-select formControlName="type" name="type">
       <ion-option value="pessoas">Pessoa</ion-option>
       <ion-option value="estabelecimentos">Estabelecimento</ion-option>
