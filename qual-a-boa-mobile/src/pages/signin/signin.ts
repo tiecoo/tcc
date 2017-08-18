@@ -46,6 +46,7 @@ export class SigninPage {
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
       type: ['']
     });
+    console.log(this.business.getLastPatente());
   }
   createToast(message: string) {
     return this.toastCtrl.create({

@@ -15,26 +15,22 @@
 
 <ion-content padding>
   <form [formGroup]="emailSignUpForm" (ngSubmit)="cadastrar()">
-  <ion-item>
-    <ion-label floating>Email</ion-label>
-    <ion-input type="email" formControlName="email" name="email" required clearInput></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label floating>E-mails</ion-label>
+      <ion-input type="email" formControlName="email" name="email" required clearInput></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label floating>Senha</ion-label>
-    <ion-input type="password" formControlName="password" clearInput></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label floating>Senha</ion-label>
+      <ion-input type="password" formControlName="password" clearInput></ion-input>
+    </ion-item>
 
-  <button ion-button item-right type="submit" [disabled]="!emailSignUpForm.valid" block>Cadastrar</button>
+    <ion-item>
+      <ion-label floating>Confirmar Senha</ion-label>
+      <ion-input type="password" formControlName="repassword" clearInput></ion-input>
+    </ion-item>
 
-</form>
-  <!-- <ion-list>
-    <ion-item *ngFor="let est of lista | async">
-      <h2>{{est.dono}}</h2>
-      <h3>{{est.rua}}</h3>
-       <ion-note item-right *ngIf="carro.multa === 'true'">
-        Tem multa
-      </ion-note> -->
-    <!-- </ion-item>
-  </ion-list> -->
+    <button ion-button item-right type="submit" [disabled]="!emailSignUpForm.valid" block>Cadastrar</button>
+
+  </form>
 </ion-content>

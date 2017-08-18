@@ -11,6 +11,8 @@ import { LoginpersonPage } from '../pages/loginperson/loginperson';
 import { SigninPage } from '../pages/signin/signin';
 
 
+import { HttpModule } from '@angular/http';
+
 import { AuthService } from '../providers/auth-service/auth-service';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -43,13 +45,15 @@ export const firebaseConfig = {
     LoginestabelecimentoPage,
     LoginpersonPage,
     SigninPage
+
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

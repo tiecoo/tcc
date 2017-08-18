@@ -5,8 +5,9 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { ToastController } from 'ionic-angular';
 import { ViewController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
+import { BusinessProvider } from '../../providers/business/business';
 import {AlertController} from 'ionic-angular';
-
+import { HomePage} from '../home/home';
 /**
  * Generated class for the LoginpersonPage page.
  *
@@ -27,10 +28,11 @@ import {AlertController} from 'ionic-angular';
 export class LoginpersonPage {
   pessoa: Pessoa;
   lista: FirebaseListObservable<any>;
+  objetoperson: any = [];
   public title = 'Sign up with email'
     public emailSignUpForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public business: BusinessProvider, private formBuilder: FormBuilder,
     public auth: AuthProvider,
     public toastCtrl: ToastController,
     public viewCtrl: ViewController, public af: AngularFireDatabase, public alertc: AlertController) {
@@ -39,7 +41,8 @@ export class LoginpersonPage {
       this.pessoa = new Pessoa();
     this.emailSignUpForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
+      password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
+      repassword: ['', Validators.compose([Validators.minLength(6), Validators.required])]
     });
   }
 
@@ -54,33 +57,40 @@ export class LoginpersonPage {
   })
 }
 
-emailSignUpFormSubmit() {
-    // first we check, if the form is valid
-    if (!this.emailSignUpForm.valid) {
-      this.createToast('Form not valid').present();
-      return
-    } else {
-      this.pessoa['pessoa'] = true;
-      this.pessoa['email'] = this.emailSignUpForm.value.email;
-      // if the form is valid, we continue with validation
-      this.auth.signUpUser(this.emailSignUpForm.value.email, this.emailSignUpForm.value.password)
-        .then(() => {
-          this.lista.push(this.pessoa).then(() => {
-              this.pessoa = new Pessoa();
-              let alert = this.alertc.create({
-                title: 'Cadastrado com sucesso!',
-                buttons: ['Continuar']
-            });
-
-            // showing succesfull message
-            this.createToast('Cadastradado pelo: ' + this.emailSignUpForm.value.email).present()
-            // closing dialog
-            // this.viewCtrl.dismiss()
-          }),
-        (error) => {
-          this.createToast(error.message).present();
-        }
-      });
-    }
+cadastrar(){
+  if (!this.emailSignUpForm.valid) {
+    this.createToast('Form not valid').present();
+    return
   }
+  else {
+    // if the form is valid, we continue with validation
+    this.objetoperson = {
+      'email': this.emailSignUpForm.value.email,
+      'password' : this.emailSignUpForm.value.password,
+      'repassword': this.emailSignUpForm.value.repassword,
+      'pessoa': 1
+    }
+    this.business.setPerson(this.objetoperson);
+    this.business.cadastrarPessoa(this.objetoperson).subscribe(data => {
+      console.log(JSON.stringify(data));
+      let alert = this.alertCtrl.create({
+        title: 'Cadastrado com sucesso!',
+        subTitle: 'Seja bem vindo ao Qual é a Boa!',
+        buttons: ['OK']
+      });
+
+      alert.present();
+      this.navCtrl.setRoot(HomePage);
+    }, err => {
+      console.log("ERROR | METHOD: CADASTRAR | POST: CADASTRARPESSOA => " + err);
+      let alert = this.alertCtrl.create({
+        title: 'E-mail ja cadastrado!',
+        subTitle: 'Caro, esse e-mail ja esta cadastrado na nossa base de dados!',
+        buttons: ['OK']
+      });
+      alert.present();
+    });
+  }
+
+}
 }

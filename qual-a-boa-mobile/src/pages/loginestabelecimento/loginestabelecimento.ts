@@ -6,6 +6,8 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { ViewController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { BusinessProvider } from '../../providers/business/business';
+import { HomePage } from '../home/home';
 
 /**
  * Generated class for the LoginestabelecimentoPage page.
@@ -17,6 +19,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
    id: string;
    email: string;
    password: string;
+   repassword: string;
    pessoa: boolean;
  }
 @IonicPage()
@@ -26,9 +29,10 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class LoginestabelecimentoPage {
   lista: FirebaseListObservable<any>;
+  objetoestab:any = [];
   estabelecimento: Estabelecimento;
     public emailSignUpForm: FormGroup;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFireDatabase, public alertc: AlertController, private formBuilder: FormBuilder,
+  constructor(public alertCtrl: AlertController,public business: BusinessProvider,public navCtrl: NavController, public navParams: NavParams, public af: AngularFireDatabase, public alertc: AlertController, private formBuilder: FormBuilder,
     public auth: AuthProvider,
     public toastCtrl: ToastController,
     public viewCtrl: ViewController) {
@@ -38,7 +42,8 @@ export class LoginestabelecimentoPage {
     this.estabelecimento = new Estabelecimento();
     this.emailSignUpForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
+      password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
+      repassword: ['', Validators.compose([Validators.minLength(6), Validators.required])]
     });
 
   }
@@ -49,39 +54,32 @@ export class LoginestabelecimentoPage {
     }
     else {
       // if the form is valid, we continue with validation
-      this.auth.signUpUser(this.emailSignUpForm.value.email, this.emailSignUpForm.value.password)
-        .then(() => {
-          this.estabelecimento['pessoa'] = false;
-          this.estabelecimento['email'] = this.emailSignUpForm.value.email;
-          this.estabelecimento['senha'] = this.emailSignUpForm.value.senha;
+      this.objetoestab = {
+        'email': this.emailSignUpForm.value.email,
+        'password' : this.emailSignUpForm.value.password,
+        'repassword': this.emailSignUpForm.value.repassword,
+        'pessoa': 0
+      }
+      this.business.setPerson(this.objetoestab);
+      this.business.cadastrarEstabelecimento(this.objetoestab).subscribe(data => {
+        console.log(JSON.stringify(data));
+        let alert = this.alertCtrl.create({
+          title: 'Cadastrado com sucesso!',
+          subTitle: 'Seja bem vindo ao Qual é a Boa!',
+          buttons: ['OK']
+        });
+        alert.present();
+        this.navCtrl.setRoot(HomePage);
 
-          this.lista.push(this.estabelecimento).then(() => {
-
-            let alert = this.alertc.create({
-              title: 'Cadastrado com sucesso!',
-              buttons: ['Continuar']
-          });
-
-
-          alert.present();
-            this.estabelecimento = new Estabelecimento();
-          });
-
-          // showing succesfull message
-          this.createToast('Signed up with email: ' + this.emailSignUpForm.value.email).present()
-          // closing dialog
-          // this.viewCtrl.dismiss()
-        },
-        /**
-         * Handle Authentication errors
-         * Here you can customise error messages like our example.
-         * https://firebase.google.com/docs/reference/js/firebase.auth.Error
-         *
-         * mismatch with error interface: https://github.com/angular/angularfire2/issues/976
-         */
-        (error) => {
-          this.createToast(error.message).present();
-        })
+      }, err => {
+        console.log("ERROR | METHOD: CADASTRAR | POST: CADASTRARESTABELECIMENTO => " + err);
+        let alert = this.alertCtrl.create({
+          title: 'E-mail ja cadastrado!',
+          subTitle: 'Caro, esse e-mail ja esta cadastrado na nossa base de dados!',
+          buttons: ['OK']
+        });
+        alert.present();
+      });
     }
 
   }
