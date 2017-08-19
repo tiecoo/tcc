@@ -68,7 +68,8 @@ cadastrar(){
       'email': this.emailSignUpForm.value.email,
       'password' : this.emailSignUpForm.value.password,
       'repassword': this.emailSignUpForm.value.repassword,
-      'pessoa': 1
+      'pessoa': 1,
+      'tipo': 'pessoa'
     }
     this.business.setPerson(this.objetoperson);
     this.business.cadastrarPessoa(this.objetoperson).subscribe(data => {

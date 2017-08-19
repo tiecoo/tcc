@@ -29,7 +29,7 @@ MongoClient.connect(mongodb_conn, function(err, database) {
   if(err) throw err;
   dbqual = database;
   app.listen(3000);
-  console.log(dbqual);
+  console.log('Database connected');
 });
 
 
@@ -74,7 +74,6 @@ app.post("/newpessoa",function(req, res, next){
   console.log(req.body.pessoa);
     let pessoa = req.body.pessoa;
     dbqual.collection("pessoa").find({'email': pessoa['email']}).toArray(function(err, docs){
-    // console.log('docs');
       if (docs.length > 0){
         res.status(409).send({message: "E-mail já cadastrado!"});
         console.log("Email ja existente =====> Pessoa")
@@ -91,4 +90,24 @@ app.post("/newpessoa",function(req, res, next){
     //     console.log("inserido com sucess =====> Estabelecimento");
     //     res.status(200).send({message: "Estabelecimento inserido com sucesso!"});
     // });
-  });
+});
+app.post("/validateuser",function(req, res, next){
+    console.log(req.body.docs);
+    console.log('Chegou Login ==> PESSOA');
+    dbqual.collection(req.body.docs['type']).find({'email': req.body.docs['email']}).toArray(function(err, docs){
+      if (docs.length > 0){
+        console.log(docs[0]);
+        if (docs[0]['password'] == req.body.docs['password']){
+          console.log("E-mail e senha correta");
+          res.status(200).send({message: "Senha correta!", info: docs[0]});
+        } else{
+          res.status(200).send({message: "Senha incorreta!"});
+          console.log("Senha incorreta");
+        }
+
+      }else {
+        res.status(200).send({message: "Conta inexistente!"});
+        console.log('Conta inexistente!');
+      }
+    });
+});

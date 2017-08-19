@@ -58,7 +58,8 @@ export class LoginestabelecimentoPage {
         'email': this.emailSignUpForm.value.email,
         'password' : this.emailSignUpForm.value.password,
         'repassword': this.emailSignUpForm.value.repassword,
-        'pessoa': 0
+        'pessoa': 0,
+        'tipo': 'estabelecimento'
       }
       this.business.setPerson(this.objetoestab);
       this.business.cadastrarEstabelecimento(this.objetoestab).subscribe(data => {

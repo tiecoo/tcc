@@ -10,6 +10,7 @@ import { ToastController } from 'ionic-angular';
 import { ViewController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { BusinessProvider } from '../../providers/business/business';
+import {AlertController} from 'ionic-angular';
 
 import { Nav, Platform } from 'ionic-angular';
 
@@ -37,7 +38,7 @@ export class SigninPage {
   public signInForm: FormGroup;
   public title = 'Sign in with email'
 
-  constructor(public navCtrl: NavController, private formBuilder: FormBuilder,
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, private formBuilder: FormBuilder,
     public auth: AuthProvider,
     public toastCtrl: ToastController,
     public viewCtrl: ViewController, public business: BusinessProvider) {
@@ -55,34 +56,62 @@ export class SigninPage {
     })
   }
   signInFormSubmit() {
+    ;
+    console.log("Formulario de signin!");
 
-      // first we check, if the form is valid
-      if (!this.signInForm.valid) {
-        this.createToast('Ooops, form not valid...').present();
-        return
+    this.business.validateUser(this.signInForm.value).subscribe(data => {
+      console.log(data['message']);
+      if (data['message'] == "Senha correta!"){
+        console.log(JSON.stringify(data['info']));
+        data['info']['tipo'] = this.signInForm.value.type;
+        this.business.setPerson(data['info']);
+        this.navCtrl.setRoot(HomePage);
+      } else if (data['message'] == "Senha incorreta!"){
+        let alert = this.alertCtrl.create({
+          title: 'Login incorreto!',
+          subTitle: 'A senha digitada esta incorreta!',
+          buttons: ['OK']
+        });
+        alert.present();
       } else {
-        this.business.setPerson(this.signInForm.value.email);
-        this.business.setType(this.signInForm.value.type);
-        // if the form is valid, we continue with validation
-        this.auth.signInUser(this.signInForm.value.email, this.signInForm.value.password)
-          .then(() => {
-            this.navCtrl.setRoot(HomePage);
-            // this.navCtrl.push(HomePage);
-            // this.navCtrl.push(HomePage, {
-            //     email: this.signInForm.value.email
-            // });
-          },
-          (error: any) => {
-            switch (error.code) {
-              case 'auth/invalid-api-key':
-                this.createToast('Invalid API key, don\'t forget update').present();
-                break;
-              default:
-                this.createToast(error.message).present();
-                break;
-            }
-          })
+        let alert = this.alertCtrl.create({
+          title: 'Cadastrado inexistente!',
+          subTitle: 'E-mail e senha incorretos!',
+          buttons: ['OK']
+        });
+        alert.present();
       }
+
+    }, err => {
+      console.log("ERROR | METHOD: CADASTRAR | POST: LOGINUSER => " + err);
+    });
+      // first we check, if the form is valid
+      // if (!this.signInForm.valid) {
+      //   this.createToast('Ooops, form not valid...').present();
+      //   return
+      // } else {
+      //   this.business.setPerson(this.signInForm.value.email);
+      //   this.business.setType(this.signInForm.value.type);
+      //   // if the form is valid, we continue with validation
+      //   this.auth.signInUser(this.signInForm.value.email, this.signInForm.value.password)
+      //     .then(() => {
+      //       this.navCtrl.setRoot(HomePage);
+      //       // this.navCtrl.push(HomePage);
+      //       // this.navCtrl.push(HomePage, {
+      //       //     email: this.signInForm.value.email
+      //       // });
+      //     },
+      //     (error: any) => {
+      //       switch (error.code) {
+      //         case 'auth/invalid-api-key':
+      //           this.createToast('Invalid API key, don\'t forget update').present();
+      //           break;
+      //         default:
+      //           this.createToast(error.message).present();
+      //           break;
+      //       }
+      //     })
+      // }
     }
   ionViewDidLoad() {
     console.log('ionViewDidLoad SigninPage');
