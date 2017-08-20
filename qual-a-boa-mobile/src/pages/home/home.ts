@@ -25,8 +25,7 @@ export class HomePage {
   constructor( public af: AngularFireDatabase,public navCtrl: NavController, public auth: AuthProvider, public navParams: NavParams, public business: BusinessProvider) {
 
     this.parameter1 = this.business.getPerson();
-    console.log("OBJETO DO GET ===>", this.parameter1);
-    this.tipo = this.business.getType();
+    console.log("OBJETO DO GET ===>".concat(JSON.stringify(this.parameter1)));
     this.people = this.af.list('https://qualaboa-68e64.firebaseio.com/'+this.tipo, {
       query: {
         orderByChild: 'email',

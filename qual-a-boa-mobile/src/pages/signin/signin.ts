@@ -62,7 +62,7 @@ export class SigninPage {
     this.business.validateUser(this.signInForm.value).subscribe(data => {
       console.log(data['message']);
       if (data['message'] == "Senha correta!"){
-        console.log(JSON.stringify(data['info']));
+
         data['info']['tipo'] = this.signInForm.value.type;
         this.business.setPerson(data['info']);
         this.navCtrl.setRoot(HomePage);
