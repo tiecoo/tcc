@@ -2,6 +2,7 @@
 // var config = require('./config.json');
 // $json = json_decode($str, true);
 var mongodb_conn = "mongodb://admin:admin@qualeaboa-shard-00-00-bkuzc.mongodb.net:27017,qualeaboa-shard-00-01-bkuzc.mongodb.net:27017,qualeaboa-shard-00-02-bkuzc.mongodb.net:27017/todos?ssl=true&replicaSet=qualeaboa-shard-0&authSource=admin";
+// var mongodb_conn= '0.0.0.0:27017';
 var express = require('express');
 var cors = require('cors')
 var app = express();
@@ -81,7 +82,7 @@ app.post("/newpessoa",function(req, res, next){
         dbqual.collection('pessoa').insertOne(pessoa, function(err, insert) {
             if(err) throw err;
             console.log("inserido com sucess =====> Pessoa");
-            res.status(200).send({message: "Estabelecimento inserido com sucesso!"});
+            res.status(200).send({message: "Pessoa inserido com sucesso!"});
         });
       }
     });
@@ -110,4 +111,51 @@ app.post("/validateuser",function(req, res, next){
         console.log('Conta inexistente!');
       }
     });
+});
+
+app.post("/updateuser",function(req, res, next){
+    console.log(req.body.docs);
+    let conteudo = req.body.docs;
+    console.log('Chegou Atualização');
+    if(conteudo['tipo'] == 'estabelecimento'){
+    dbqual.collection(conteudo['tipo']).updateOne({
+            "_id": ObjectID(conteudo['_id'])
+        }, {
+            $set:{
+              'name': conteudo['name'],
+              'nameresp': conteudo['nameresp'],
+              'phone': conteudo['phone'],
+              'address': conteudo['address'],
+              'descricao': conteudo['descricao'],
+              'open': conteudo['open'],
+              'close': conteudo['close'],
+              'completo': 1
+              }
+
+        }, function(err, results) {
+            console.log(results.result);
+        });
+      }
+    // dbqual.collection(conteudo['tipo']).updateOne({_id:ObjectID(conteudo['_id'])}, conteudo)
+    res.status(200).send({message: "Atualizado corretamente!"});
+
+});
+
+app.post('/getusercardapio',function(req, res, next){
+    console.log(req.body);
+    dbqual.collection('cardapio').find({'idEstabelecimento': req.body.idEstabelecimento}).toArray(function(err, docs){
+          res.status(200).send({message: "Retornado!", docs: docs});
+          console.log(docs);
+    });
+
+app.post('/additem', function(req, res, next){
+  console.log(req.body.item);
+  dbqual.collection('cardapio').insertOne(req.body.item, function(err, insert) {
+      if(err) throw err;
+      console.log("inserido com sucess =====> CARDAPIO");
+      res.status(200).send({message: "Item cardapio inserido com sucesso!"});
+  });
+});
+
+
 });

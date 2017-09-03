@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController,AlertController, NavParams } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { LoginPage } from '../login/login';
+import { CardapioPage } from '../cardapio/cardapio';
 import {
   AngularFireDatabase,
   FirebaseListObservable } from 'angularfire2/database';
@@ -22,29 +23,40 @@ export class HomePage {
   }
   public people: FirebaseListObservable<any>;
 
-  constructor( public af: AngularFireDatabase,public navCtrl: NavController, public auth: AuthProvider, public navParams: NavParams, public business: BusinessProvider) {
+  constructor( public alertCtrl: AlertController, public af: AngularFireDatabase,public navCtrl: NavController, public auth: AuthProvider, public navParams: NavParams, public business: BusinessProvider) {
 
     this.parameter1 = this.business.getPerson();
     console.log("OBJETO DO GET ===>".concat(JSON.stringify(this.parameter1)));
-    this.people = this.af.list('https://qualaboa-68e64.firebaseio.com/'+this.tipo, {
-      query: {
-        orderByChild: 'email',
-        equalTo: this.parameter1
-      }
-    });
+
   }
 
   public completarcadastro(){
-    console.log(this.people[0]);
+    this.parameter1['open'] = this.event.timeStarts;
+    this.parameter1['close'] = this.event.timeEnd;
+    this.parameter1['completo'] = 1;
+    console.log("CADASTRO COMPLETO ===>".concat(JSON.stringify(this.parameter1)));
+    this.business.updateUser(this.parameter1).subscribe(data => {
+      console.log(data['message']);
+        let alert = this.alertCtrl.create({
+          title: 'Cadastro completo!',
+          subTitle: 'Muito obrigado por completar o cadastro, que tal agora adicionar alguns itens ao cardápio do seu estabelecimento?',
+          buttons: ['OK']
+        });
+        alert.present();
+
+    }, err => {
+      console.log("ERROR | METHOD: CADASTRAR | POST: LOGINUSER => " + err);
+    });
 
   }
   signOutClicked() {
-    this.auth.signOutUser();
     this.navCtrl.insert(0,LoginPage);
     this.navCtrl.popToRoot();
+  // this.navCtrl.push(LoginPage);
+  }
 
-
-    // this.navCtrl.push(LoginPage);
+  openPage(){
+    this.navCtrl.setRoot(CardapioPage);
   }
 //hey
 }

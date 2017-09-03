@@ -1,0 +1,51 @@
+<!--
+  Generated template for the CardapioPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>cardapio</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Cardápio</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card-content>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Nome do item</ion-label>
+        <ion-input type="text" [(ngModel)]="nomeitem"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Preço</ion-label>
+        <ion-input type="number" [(ngModel)]="precoitem"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Descrição</ion-label>
+        <ion-input type="text" [(ngModel)]="descitem"></ion-input>
+      </ion-item>
+      <button ion-button color="light" (click)="additem()">Adicionar item</button>
+    </ion-list>
+  </ion-card-content>
+
+  <ion-list inset>
+    <button ion-item *ngFor="let item of itenscardapio" >
+      {{ item['nomeitem'] }} <small> R$ {{ item['precoitem'] }}</small>
+    </button>
+  </ion-list>
+
+</ion-content>

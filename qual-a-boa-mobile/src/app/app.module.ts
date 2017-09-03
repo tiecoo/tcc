@@ -9,7 +9,7 @@ import { LoginPage } from '../pages/login/login';
 import { LoginestabelecimentoPage } from '../pages/loginestabelecimento/loginestabelecimento';
 import { LoginpersonPage } from '../pages/loginperson/loginperson';
 import { SigninPage } from '../pages/signin/signin';
-
+import { CardapioPage } from '../pages/cardapio/cardapio';
 
 import { HttpModule } from '@angular/http';
 
@@ -44,8 +44,8 @@ export const firebaseConfig = {
     LoginPage,
     LoginestabelecimentoPage,
     LoginpersonPage,
-    SigninPage
-
+    SigninPage,
+    CardapioPage
   ],
   imports: [
     BrowserModule,
@@ -63,7 +63,8 @@ export const firebaseConfig = {
     LoginPage,
     LoginestabelecimentoPage,
     LoginpersonPage,
-    SigninPage
+    SigninPage,
+    CardapioPage
   ],
   providers: [
     StatusBar,

@@ -12,6 +12,75 @@
   {{parameter1}}
   <button ion-button type="button" (click)="signOutClicked()" clear>Sign Out</button>
 
+
+  <ion-list *ngIf="parameter1['tipo'] == 'estabelecimento' && parameter1['completo'] != 1">
+
+    <ion-item>
+      <ion-label floating>Nome do estabelecimento</ion-label>
+      <ion-input type="text" [(ngModel)]="parameter1['name']"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label floating>Nome do responsável</ion-label>
+      <ion-input type="text"  [(ngModel)]="parameter1['nameresp']"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label floating>Telefone para contato</ion-label>
+      <ion-input type="number" [(ngModel)]="parameter1['phone']"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label floating>Endereço</ion-label>
+      <ion-input type="text" [(ngModel)]="parameter1['address']"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label floating>Horario de abertura</ion-label>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label floating>Horario de encerramento</ion-label>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnd"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Breve descrição</ion-label>
+      <ion-input type="text-wrap" [(ngModel)]="parameter1['descricao']"></ion-input>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label floating>Data de Aniversário</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
+    </ion-item> -->
+    <button ion-button color="light" (click)="completarcadastro()">Completar Cadastro</button>
+  </ion-list>
+
+  <ion-card *ngIf="parameter1['tipo'] == 'estabelecimento' && parameter1['completo'] == 1">
+  <ion-card-header>
+    Seja bem vindo {{parameter1['name']}}
+  </ion-card-header>
+
+  <ion-list>
+    <button ion-item (click)="openPage()">
+      <ion-icon name="cart" item-start></ion-icon>
+      Cardápio
+    </button>
+
+    <button ion-item>
+      <ion-icon name="beer" item-start></ion-icon>
+      Promoções
+    </button>
+
+  </ion-list>
+</ion-card>
+
+
     <ion-list>
 
       <ion-item *ngFor="let est of people | async">
@@ -26,7 +95,7 @@
     </ion-list>
   <button ion-button secondary menuToggle>Toggle Menu</button>
 
-  <ion-card *ngFor="let est of people | async">
+  <ion-card  *ngIf="parameter1['tipo'] == 'pessoa' && parameter1['completo'] != 1">
 
     <ion-card-header>
       Terminando o cadastro
@@ -53,51 +122,5 @@
 
       </ion-list>
     </ion-card-content>
-
-    <ion-card-content *ngIf="est.pessoa == false">
-      <ion-list>
-
-        <ion-item>
-          <ion-label floating>Nome do estabelecimento</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-
-
-        <ion-item>
-          <ion-label floating>Nome do responsável</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-
-
-        <ion-item>
-          <ion-label floating>Telefone para contato</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-
-
-        <ion-item>
-          <ion-label floating>Endereço</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-
-
-        <ion-item>
-          <ion-label floating>Horario de abertura</ion-label>
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
-        </ion-item>
-
-
-        <ion-item>
-          <ion-label floating>Horario de encerramento</ion-label>
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnd"></ion-datetime>
-        </ion-item>
-        <ion-item>
-          <ion-label floating>Data de Aniversário</ion-label>
-          <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
-        </ion-item>
-        <button ion-button color="light" (click)="completarcadastro()">Completar Cadastro</button>
-      </ion-list>
-    </ion-card-content>
-
   </ion-card>
 </ion-content>

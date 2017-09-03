@@ -7,7 +7,7 @@ import 'rxjs/add/operator/timeout';
 export class BusinessProvider {
   person: any;
   type: any;
-  public api= "http://192.168.0.110:3000";
+  public api = "http://192.168.0.110:3000";
   // 172.18.0.82
 // public api= "http://172.18.0.82:3000";
   constructor(private http: Http) { }
@@ -50,6 +50,38 @@ export class BusinessProvider {
         console.log("Response====> ", response.json());
         return response.json();
       }
+    );
+  }
+
+  updateUser(objeto){
+    let data = {docs : objeto}
+    console.log(JSON.stringify(data));
+    return this.http.post(`${this.api}/updateuser`, data)
+      .map((response: Response) => {
+        console.log("Response====> ", response.json());
+        return response.json();
+      }
+    );
+  }
+
+  public getCardapio(id){
+    return this.http.post(`${this.api}/getusercardapio`, {'idEstabelecimento': id})
+    .map((response: Response) => {
+        console.log("Response====> ", response.json());
+        return response.json();
+      }
+    );
+  }
+
+  addCardapio(item){
+    let data = {item: item};
+    console.log(data);
+    return this.http.post(`${this.api}/additem`, data)
+    .map((response: Response) => {
+        console.log("Response====> ", response.json());
+        return response.json();
+      }
+    
     );
   }
 
