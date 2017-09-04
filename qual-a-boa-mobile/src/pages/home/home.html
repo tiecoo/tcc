@@ -101,26 +101,48 @@
       Terminando o cadastro
     </ion-card-header>
 
-    <ion-card-content  *ngIf="est.pessoa == true">
+    <ion-card-content>
       <ion-list>
 
         <ion-item>
           <ion-label floating>Nome</ion-label>
-          <ion-input type="text"></ion-input>
+          <ion-input type="text" [(ngModel)]="parameter1['nome']"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label floating>Como deseja ser chamado</ion-label>
-          <ion-input type="text"></ion-input>
+          <ion-input type="text" [(ngModel)]="parameter1['nickname']"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label floating>Data de Aniversário</ion-label>
-          <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
+          <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="parameter1['birth']"></ion-datetime>
         </ion-item>
         <button ion-button color="light" (click)="completarcadastro()">Completar Cadastro</button>
 
       </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card  *ngIf="parameter1['tipo'] == 'pessoa' && parameter1['completo'] == 1">
+
+    <ion-card-header>
+      Aqui estão algumas opções de lazer perto de você!
+    </ion-card-header>
+    <ion-card *ngFor='let est of todosestabelecimentos'>
+      <img src="http://www.chaplinmarilia.com.br/wp-content/uploads/chaplin-marilia-bar-gatronoma-feijoada-02.jpg"/>
+      <ion-card-content>
+        <ion-card-title>
+          {{est.name}}
+          </ion-card-title>
+        <p>
+          {{est.descricao}}
+
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card-content>
+
     </ion-card-content>
   </ion-card>
 </ion-content>

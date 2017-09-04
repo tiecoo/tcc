@@ -43,6 +43,14 @@ app.get("/inserirteste", function(req, res) {
   });
 });
 
+app.get("/estabelecimentos", function(req, res) {
+  console.log('estabelecimentos');
+  dbqual.collection("estabelecimento").find({'completo': 1}).toArray(function(err, docs){
+    res.json({docs});
+  });
+});
+
+
 app.get("/todos", function(req, res) {
   console.log('teste');
   dbqual.collection("teste").find({}).toArray(function(err, docs){
@@ -135,6 +143,20 @@ app.post("/updateuser",function(req, res, next){
         }, function(err, results) {
             console.log(results.result);
         });
+      }else{
+        dbqual.collection(conteudo['tipo']).updateOne({
+                "_id": ObjectID(conteudo['_id'])
+            }, {
+                $set:{
+                  'name': conteudo['nome'],
+                  'nickname': conteudo['nickname'],
+                  'birth': conteudo['birth'],
+                  'completo': 1
+                  }
+
+            }, function(err, results) {
+                console.log(results.result);
+            });
       }
     // dbqual.collection(conteudo['tipo']).updateOne({_id:ObjectID(conteudo['_id'])}, conteudo)
     res.status(200).send({message: "Atualizado corretamente!"});

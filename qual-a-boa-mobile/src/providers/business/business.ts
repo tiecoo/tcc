@@ -7,9 +7,9 @@ import 'rxjs/add/operator/timeout';
 export class BusinessProvider {
   person: any;
   type: any;
-  public api = "http://192.168.0.110:3000";
+  // public api = "http://192.168.0.110:3000";
   // 172.18.0.82
-// public api= "http://172.18.0.82:3000";
+public api= "http://172.18.0.82:3000";
   constructor(private http: Http) { }
 
 
@@ -23,6 +23,13 @@ export class BusinessProvider {
      this.http.get(`${this.api}/todos`).map(res => res.json()).subscribe(docs => {
         console.log( 'docs');
     });
+  }
+
+  getEstabelecimentos() {
+    return this.http.get(`${this.api}/estabelecimentos`)
+     .map((response: Response) => {
+       return response.json();
+     });
   }
 
   cadastrarEstabelecimento(estabelecimento){
@@ -81,7 +88,7 @@ export class BusinessProvider {
         console.log("Response====> ", response.json());
         return response.json();
       }
-    
+
     );
   }
 
