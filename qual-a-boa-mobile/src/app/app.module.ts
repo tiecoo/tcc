@@ -10,6 +10,7 @@ import { LoginestabelecimentoPage } from '../pages/loginestabelecimento/loginest
 import { LoginpersonPage } from '../pages/loginperson/loginperson';
 import { SigninPage } from '../pages/signin/signin';
 import { CardapioPage } from '../pages/cardapio/cardapio';
+import { InfosPage } from '../pages/infos/infos';
 
 import { HttpModule } from '@angular/http';
 
@@ -24,6 +25,8 @@ import { BusinessProvider } from '../providers/business/business';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+import { Geolocation } from '@ionic-native/geolocation';
 // import { AuthProvider } from '../providers/auth/auth';
 // import { AuthService } from '../providers/auth-service/auth-service';
 
@@ -45,7 +48,8 @@ export const firebaseConfig = {
     LoginestabelecimentoPage,
     LoginpersonPage,
     SigninPage,
-    CardapioPage
+    CardapioPage,
+    InfosPage
   ],
   imports: [
     BrowserModule,
@@ -64,7 +68,9 @@ export const firebaseConfig = {
     LoginestabelecimentoPage,
     LoginpersonPage,
     SigninPage,
-    CardapioPage
+    CardapioPage,
+    InfosPage
+
   ],
   providers: [
     StatusBar,
@@ -72,7 +78,9 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
     AuthProvider,
-    BusinessProvider
+    BusinessProvider,
+    BackgroundGeolocation,
+    Geolocation,
     // AuthService
   ]
 })

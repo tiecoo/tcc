@@ -14,6 +14,26 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+var request = require('request');
+var infoCEP;
+
+var cep = '17502270';
+
+var configsCEP = {
+    url: 'http://www.cepaberto.com/api/v2/ceps.json?cep='+cep,
+    headers: {
+        'Authorization': 'Token token=809c1c14363dc97da5d0b2ba8bbb4156'
+    }
+};
+
+function callback(error, response, body) {
+    if (!error && response.statusCode == 200) {
+        infoCEP = JSON.parse(body);
+        console.log(infoCEP);
+    }
+}
+
+
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -22,14 +42,16 @@ app.use(function(req, res, next) {
 
   next();
 });
-
 // var schedule = require('node-schedule');
 
+var port = process.env.PORT || 8080;
 
 MongoClient.connect(mongodb_conn, function(err, database) {
   if(err) throw err;
   dbqual = database;
-  app.listen(3000);
+  app.listen(port);
+  request(configsCEP, callback);
+
   console.log('Database connected');
 });
 
@@ -126,23 +148,31 @@ app.post("/updateuser",function(req, res, next){
     let conteudo = req.body.docs;
     console.log('Chegou Atualização');
     if(conteudo['tipo'] == 'estabelecimento'){
-    dbqual.collection(conteudo['tipo']).updateOne({
-            "_id": ObjectID(conteudo['_id'])
-        }, {
-            $set:{
-              'name': conteudo['name'],
-              'nameresp': conteudo['nameresp'],
-              'phone': conteudo['phone'],
-              'address': conteudo['address'],
-              'descricao': conteudo['descricao'],
-              'open': conteudo['open'],
-              'close': conteudo['close'],
-              'completo': 1
-              }
+      cep = conteudo['cep'];
+      request(configsCEP, callback);
+      console.log(infoCEP);
+        setTimeout(function(){
+          dbqual.collection(conteudo['tipo']).updateOne({
+                  "_id": ObjectID(conteudo['_id'])
+              }, {
+                  $set:{
+                    'name': conteudo['name'],
+                    'nameresp': conteudo['nameresp'],
+                    'phone': conteudo['phone'],
+                    'address': conteudo['address'],
+                    'descricao': conteudo['descricao'],
+                    'open': conteudo['open'],
+                    'close': conteudo['close'],
+                    'completo': 1,
+                    'cep': conteudo['cep'],
+                    'latitude' : infoCEP['latitude'],
+                    'longitude': infoCEP['longitude']
+                    }
 
-        }, function(err, results) {
-            console.log(results.result);
-        });
+              }, function(err, results) {
+                  console.log(results.result);
+              });
+        }, 4000);
       }else{
         dbqual.collection(conteudo['tipo']).updateOne({
                 "_id": ObjectID(conteudo['_id'])

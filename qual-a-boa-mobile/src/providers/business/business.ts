@@ -6,12 +6,15 @@ import 'rxjs/add/operator/timeout';
 @Injectable()
 export class BusinessProvider {
   person: any;
+  estabelecimentoatual: any;
   type: any;
-  // public api = "http://192.168.0.110:3000";
+  latitude: number = 0;
+  longitude: number = 0;
+  public api = "http://192.168.0.104:8080";
   // 172.18.0.82
-public api= "http://172.18.0.82:3000";
+ // public api = 'http://api-qual.herokuapp.com';
+// public api= "http://172.18.0.82:3000";
   constructor(private http: Http) { }
-
 
   getLastPatente() {
     console.log('AAAAAAAAAAAAAAAAAAAAAAAA');
@@ -25,6 +28,13 @@ public api= "http://172.18.0.82:3000";
     });
   }
 
+  setEstabelecimentoAtual(estabelecimento){
+    this.estabelecimentoatual = estabelecimento;
+  }
+
+  getEstabelecimentoAtual(){
+    return this.estabelecimentoatual;
+  }
   getEstabelecimentos() {
     return this.http.get(`${this.api}/estabelecimentos`)
      .map((response: Response) => {
@@ -92,6 +102,18 @@ public api= "http://172.18.0.82:3000";
     );
   }
 
+  public  setLocation(lat, long){
+    this.latitude = lat;
+    this.longitude = long;
+  }
+
+  public getLat(){
+    return this.latitude;
+  }
+
+  public getLong(){
+    return this.longitude;
+  }
   public setPerson(pessoa){
     this.person = pessoa;
   }

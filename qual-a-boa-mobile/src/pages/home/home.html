@@ -38,6 +38,11 @@
       <ion-input type="text" [(ngModel)]="parameter1['address']"></ion-input>
     </ion-item>
 
+    <ion-item>
+      <ion-label floating>CEP</ion-label>
+      <ion-input type="text" [(ngModel)]="parameter1['cep']"></ion-input>
+    </ion-item>
+
 
     <ion-item>
       <ion-label floating>Horario de abertura</ion-label>
@@ -131,7 +136,7 @@
     <ion-card *ngFor='let est of todosestabelecimentos'>
       <img src="http://www.chaplinmarilia.com.br/wp-content/uploads/chaplin-marilia-bar-gatronoma-feijoada-02.jpg"/>
       <ion-card-content>
-        <ion-card-title>
+        <ion-card-title (click)= "maisinfo(est)">
           {{est.name}}
           </ion-card-title>
         <p>

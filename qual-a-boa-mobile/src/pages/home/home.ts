@@ -1,8 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController,AlertController, NavParams } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { LoginPage } from '../login/login';
 import { CardapioPage } from '../cardapio/cardapio';
+import { InfosPage } from '../infos/infos';
+import { Platform } from 'ionic-angular';
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import 'rxjs/add/operator/filter';
+
 import {
   AngularFireDatabase,
   FirebaseListObservable } from 'angularfire2/database';
@@ -13,6 +19,9 @@ import {
   templateUrl: 'home.html'
 })
 export class HomePage {
+  public watch: any;
+public lat: number = 0;
+public lng: number = 0;
   parameter1: string;
   tipo: string;
   pessoacomp: any;
@@ -24,7 +33,8 @@ export class HomePage {
   }
   public people: FirebaseListObservable<any>;
 
-  constructor( public alertCtrl: AlertController, public af: AngularFireDatabase,public navCtrl: NavController, public auth: AuthProvider, public navParams: NavParams, public business: BusinessProvider) {
+  constructor(public zone: NgZone, public backgroundGeolocation :  BackgroundGeolocation, private geolocation: Geolocation, private platform: Platform, public alertCtrl: AlertController, public af: AngularFireDatabase,public navCtrl: NavController, public auth: AuthProvider, public navParams: NavParams, public business: BusinessProvider) {
+    this.startTracking();
 
     this.parameter1 = this.business.getPerson();
     console.log("OBJETO DO GET ===>".concat(JSON.stringify(this.parameter1)));
@@ -57,6 +67,11 @@ export class HomePage {
     });
 
   }
+
+  public maisinfo(estabelecimentoq){
+    this.business.setEstabelecimentoAtual(estabelecimentoq);
+    this.navCtrl.setRoot(InfosPage);
+  }
   signOutClicked() {
     this.navCtrl.insert(0,LoginPage);
     this.navCtrl.popToRoot();
@@ -66,5 +81,37 @@ export class HomePage {
   openPage(){
     this.navCtrl.setRoot(CardapioPage);
   }
+
+  startTracking() {
+
+      // Background Tracking
+
+      let config = {
+        desiredAccuracy: 0,
+        stationaryRadius: 20,
+        distanceFilter: 10,
+        debug: true,
+        interval: 2000
+      };
+
+      this.backgroundGeolocation.configure(config).subscribe((location) => {
+        this.business.setLocation( location.latitude,  location.longitude);
+        console.log('BackgroundGeolocation:  ' + location.latitude + ',' +  location.longitude);
+        // Run update inside of Angular's zone
+        this.zone.run(() => {
+          this.lat = location.latitude;
+          this.lng = location.longitude;
+        });
+      }, (err) => {
+        console.log(err);
+      });
+      // Turn ON the background-geolocation system.
+      this.backgroundGeolocation.start();
+      // Foreground Tracking
+    let options = {
+      frequency: 3000,
+      enableHighAccuracy: true
+    };
+    }
 //hey
 }
